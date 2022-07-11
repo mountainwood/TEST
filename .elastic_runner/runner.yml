@@ -1,0 +1,6 @@
+build_docker:
+  runner:
+    pod-runner:
+      image: ubuntu-2004
+      replica: 1
+      enableDocker: True
