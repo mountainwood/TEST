@@ -15,7 +15,7 @@ on:  # only support manually triggering
 env:
   BUILD_VERSION: 'v22-p-test-build-docker-az'
   BUILD_NAME: 'aws.registry.trendmicro.com/mtdis'
-  DOCKER_PROXY: "aws.registry.trendmicro.com/etscache/"
+  DOCKER_PROXY: "aws.registry.trendmicro.com/etscache1/"
 
 
 jobs:
