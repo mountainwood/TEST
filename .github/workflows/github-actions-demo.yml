@@ -1,5 +1,12 @@
 name: GitHub Actions Demo
 on: [push]
+
+env:
+  BUILD_VERSION: 'v22-p-test-build-docker-az'
+  BUILD_NAME: 'aws.registry.trendmicro.com/mtdis'
+  DOCKER_PROXY: "aws.registry.trendmicro.com/etscache/"
+  
+  
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
@@ -15,3 +22,16 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: print flow
+        run: |
+          echo "Build flow"
+          echo " github.action  - "${{ github.action }}
+          echo " github.action_path  - "${{ github.action_path }}
+          echo " github.ACTION_REPOSITORY  - "${{ github.ACTION_REPOSITORY }}
+          echo " github.ACTIONS  - "${{ github.ACTIONS }}
+          echo " github.ACTOR  - "${{ github.ACTOR }}
+          echo " github.API_URL  - "${{ github.API_URL }}
+          echo " github.BASE_REF  - "${{ github.BASE_REF }}
+          echo " github.ENV " - ${{ github.ENV }}
+          echo " github.EVENT_NAME  - "${{ github.EVENT_NAME }}
+          echo " github.EVENT_PATH  - "${{ github.EVENT_PATH }}
