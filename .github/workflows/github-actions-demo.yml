@@ -35,3 +35,31 @@ jobs:
           echo " github.ENV " - ${{ github.ENV }}
           echo " github.EVENT_NAME  - "${{ github.EVENT_NAME }}
           echo " github.EVENT_PATH  - "${{ github.EVENT_PATH }}
+          echo " github.GRAPHQL_URL  - "${{ github.GRAPHQL_URL }}
+          echo " github.HEAD_REF  - "${{ github.HEAD_REF }}
+          echo " github.JOB  - "${{ github.JOB }}
+          echo " github.PATH  - "${{ github.PATH }}
+          echo " github.REF  - "${{ github.REF }}
+          echo " github.REF_NAME  - "${{ github.REF_NAME }}
+          echo " github.GITHUB_REF_NAME  - "${{ github.GITHUB_REF_NAME }}
+          echo " github.REF_TYPE   - "${{ github.REF_TYPE }} 
+          echo " github.REPOSITORY  - "${{ github.REPOSITORY }}
+          echo " github.REPOSITORY_OWNER  - "${{ github.REPOSITORY_OWNER }}
+          echo " github.RETENTION_DAYS  - "${{ github.RETENTION_DAYS }}
+          echo " github.RUN_ATTEMPT   - "${{ github.RUN_ATTEMPT }} 
+          echo " github.RUN_ID  - "${{ github.RUN_ID }}
+          echo " github.RUN_NUMBER  - "${{ github.RUN_NUMBER }}
+          echo " github.SERVER_URL   - "${{ github.SERVER_URL }} 
+          echo " github.SHA  - "${{ github.SHA }}
+          echo " github.STEP_SUMMARY  - "${{ github.STEP_SUMMARY }}
+          echo " github.WORKSPACE  - "${{ github.WORKSPACE }}
+          echo " runner.ARCH  - "${{ runner.ARCH }}
+          echo " runner.NAME  - "${{ runner.NAME }}
+          echo " github.OS  - "${{ github.OS }}
+          echo " github.TEMP  - "${{ github.TEMP }}
+          echo " runner.TOOL_CACHE  - "${{ runner.TOOL_CACHE }}
+          echo "BUILD_VERSION_RAW = "v${{github.RUN_NUMBER}}-${{ github.REF_NAME }}-az
+          echo "GIT_ORIGIN = "${{github.SERVER_URL}}
+          echo github.event.number = ${{ github.event.number  }}
+          echo github.event.pull_request.number = ${{ github.event.pull_request.number }}
+          echo github.event.issue.number = ${{ github.event.issue.number }}
