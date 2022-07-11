@@ -60,6 +60,6 @@ jobs:
           echo " runner.TOOL_CACHE  - "${{ runner.TOOL_CACHE }}
           echo "BUILD_VERSION_RAW = "v${{github.RUN_NUMBER}}-${{ github.REF_NAME }}-az
           echo "GIT_ORIGIN = "${{github.SERVER_URL}}
-          echo github.event.number = ${{ github.event.number  }}
+          echo "github.event.number = "${{ github.event.number  }}
           echo github.event.pull_request.number = ${{ github.event.pull_request.number }}
           echo github.event.issue.number = ${{ github.event.issue.number }}
