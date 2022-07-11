@@ -1,82 +1,17 @@
-name: build_docker
-
-permissions:
-  contents: read
-  pull-requests: write
-  
-on:  # only support manually triggering
-  workflow_dispatch:
-    inputs:
-      test:
-        description: 'docker build for test'
-        required: false
-        default: 'true'
-
-env:
-  BUILD_VERSION: 'v22-p-test-build-docker-az'
-  BUILD_NAME: 'aws.registry.trendmicro.com/mtdis'
-  DOCKER_PROXY: "aws.registry.trendmicro.com/etscache1/"
-
-
+name: GitHub Actions Demo
+on: [push]
 jobs:
-  build_docker:
-    runs-on: [runner]
-    permissions: write-all
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
     steps:
-      - name: print env
-        run: |
-          echo "print env"
-          echo ${{ env.BUILD_VERSION }}
-      - name: print flow
-        run: |
-          echo "Build flow"
-          echo " github.action  - "${{ github.action }}
-          echo " github.action_path  - "${{ github.action_path }}
-          echo " github.ACTION_REPOSITORY  - "${{ github.ACTION_REPOSITORY }}
-          echo " github.ACTIONS  - "${{ github.ACTIONS }}
-          echo " github.ACTOR  - "${{ github.ACTOR }}
-          echo " github.API_URL  - "${{ github.API_URL }}
-          echo " github.BASE_REF  - "${{ github.BASE_REF }}
-          echo " github.ENV " - ${{ github.ENV }}
-          echo " github.EVENT_NAME  - "${{ github.EVENT_NAME }}
-          echo " github.EVENT_PATH  - "${{ github.EVENT_PATH }}
-          echo " github.GRAPHQL_URL  - "${{ github.GRAPHQL_URL }}
-          echo " github.HEAD_REF  - "${{ github.HEAD_REF }}
-          echo " github.JOB  - "${{ github.JOB }}
-          echo " github.PATH  - "${{ github.PATH }}
-          echo " github.REF  - "${{ github.REF }}
-          echo " github.REF_NAME  - "${{ github.REF_NAME }}
-          echo " github.GITHUB_REF_NAME  - "${{ github.GITHUB_REF_NAME }}
-          echo " github.REF_TYPE   - "${{ github.REF_TYPE }} 
-          echo " github.REPOSITORY  - "${{ github.REPOSITORY }}
-          echo " github.REPOSITORY_OWNER  - "${{ github.REPOSITORY_OWNER }}
-          echo " github.RETENTION_DAYS  - "${{ github.RETENTION_DAYS }}
-          echo " github.RUN_ATTEMPT   - "${{ github.RUN_ATTEMPT }} 
-          echo " github.RUN_ID  - "${{ github.RUN_ID }}
-          echo " github.RUN_NUMBER  - "${{ github.RUN_NUMBER }}
-          echo " github.SERVER_URL   - "${{ github.SERVER_URL }} 
-          echo " github.SHA  - "${{ github.SHA }}
-          echo " github.STEP_SUMMARY  - "${{ github.STEP_SUMMARY }}
-          echo " github.WORKSPACE  - "${{ github.WORKSPACE }}
-          echo " runner.ARCH  - "${{ runner.ARCH }}
-          echo " runner.NAME  - "${{ runner.NAME }}
-          echo " github.OS  - "${{ github.OS }}
-          echo " github.TEMP  - "${{ github.TEMP }}
-          echo " runner.TOOL_CACHE  - "${{ runner.TOOL_CACHE }}
-          
-          
-          echo "BUILD_VERSION_RAW = "v${{github.RUN_NUMBER}}-${{ github.REF_NAME }}-az
-          echo "GIT_ORIGIN = "${{github.SERVER_URL}}
-      - name: BUILD_VERSION replace run
-        run: |
-          RAW_BUILD_VERSION="v${{github.RUN_NUMBER}}-${{ github.REF_NAME }}-az"
-          BUILD_VERSION_NEW=$(echo $RAW_BUILD_VERSION | sed 's/\//-/g' | sed 's/_/-/g')
-          echo "BUILD_VERSION_NEW=${BUILD_VERSION_NEW}" >> $GITHUB_ENV   
-      - name: Print BUILD_VERSION_NEW
-        run: |
-          echo ${{ env.BUILD_VERSION_NEW }}
-      - name: Checkout 
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
         uses: actions/checkout@v3
-        with:
-          repository: mountainwood/TEST
-          fetch-depth: 0
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
