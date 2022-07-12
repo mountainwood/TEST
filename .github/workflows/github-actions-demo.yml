@@ -81,6 +81,10 @@ jobs:
       - name: Check the ref_branch
         run: |
           echo "ref_branch: ${{ steps.set_ref_branch.outputs.ref_branch }}"
+      - name: query origin or not
+        run: 
+          info=$(git branch -r)
+          echo $(info)
       - name: Get changefile
         id: filecheck
         run: |
