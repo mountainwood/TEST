@@ -65,6 +65,22 @@ jobs:
           echo "github.event.number = "${{ github.event.number  }}
           echo github.event.pull_request.number = ${{ github.event.pull_request.number }}
           echo github.event.issue.number = ${{ github.event.issue.number }}
+      - name: Decide the head_ref
+        id: set_ref_branch
+        run: |
+          echo "Trigger event: ${{ github.event_name }}"
+          echo "The ref will be checkout: ${{ github.ref }}"
+          # get REF_BRANCH from different trigger event
+          if [ ${{ github.event_name }} = "pull_request" ]
+          then
+            echo "::set-output name=ref_branch::${{ github.head_ref }}"
+          elif [ ${{ github.event_name }} = "workflow_dispatch" ]
+          then
+            echo "::set-output name=ref_branch::${{ github.ref_name }}"
+          fi
+      - name: Check the ref_branch
+        run: |
+          echo "ref_branch: ${{ steps.set_ref_branch.outputs.ref_branch }}"
       - name: Get changefile
         id: filecheck
         run: |
