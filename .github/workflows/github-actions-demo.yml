@@ -85,6 +85,14 @@ jobs:
         run: 
           info=$(git branch -r)
           echo $(info)
+      - name: git branch a
+        run: 
+          info=$(git branch -a)
+          echo $(info)
+      - name: symbolic
+        run: 
+          info=$(git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/master)
+          echo $(info)
       - name: Get changefile
         id: filecheck
         run: |
