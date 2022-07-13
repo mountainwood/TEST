@@ -55,6 +55,16 @@ jobs:
               exit 0
             fi
           done
+  Docker-build-step:
+    needs: get_changefile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run tf scan
+        if: ${{ steps.filecheck.outputs.has_tf_change == 'true' }}
+        run: |
+          echo $has_tf_change
+          
+          
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
