@@ -12,6 +12,8 @@ env:
 jobs:
   force_build_setup:
     runs-on: ubuntu-latest
+    outputs:
+      has_tf_change: ${{ steps.set_force_build_var.outputs.force_build_var }}
     steps:
       - name: Decide force_build_var
         id: set_force_build_var
