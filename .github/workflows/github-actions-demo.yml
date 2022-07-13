@@ -18,7 +18,7 @@ jobs:
       - name: Decide force_build_var
         id: set_force_build_var
         run: |
-          echo "::set-output name=force_build_var::true"
+          echo "::set-output name=force_build_var::false"
         
   env_setup:
     runs-on: ubuntu-latest
