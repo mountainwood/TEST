@@ -11,7 +11,7 @@ env:
   
 jobs:
   env_setup:
-    runs-on: [runner]
+    runs-on: ubuntu-latest
     outputs:
       ref_branch: ${{ steps.set_ref_branch.outputs.ref_branch }}
     steps:
@@ -33,7 +33,7 @@ jobs:
           echo "ref_branch: ${{ steps.set_ref_branch.outputs.ref_branch }}"
   get_changefile:
     needs: env_setup
-    runs-on: [runner]
+    runs-on: ubuntu-latest
     outputs:
       has_tf_change: ${{ steps.filecheck.outputs.has_tf_change }}
     steps:
@@ -46,6 +46,7 @@ jobs:
         run: |
           changeFiles=$(git diff --name-only origin/master...origin/${{ needs.env_setup.outputs.ref_branch }})
           echo $(changeFiles)
+          echo ${changeFiles}
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
