@@ -46,6 +46,14 @@ jobs:
         run: |
           changeFiles=$(git diff --name-only origin/master...origin/${{ needs.env_setup.outputs.ref_branch }})
           echo $changeFiles
+          do
+            if [[ $file_name = deploy/* ]]
+            then
+              echo "file_name is changed: ${file_name}"
+              echo "::set-output name=has_tf_change::true"
+              exit 0
+            fi
+          done
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
