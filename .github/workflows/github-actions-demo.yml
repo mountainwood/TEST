@@ -68,12 +68,12 @@ jobs:
               exit 0
             fi
           done
-  Docker-build-step:
+  Docker-build-ornot:
     needs: [get_changefile, force_build_setup]
     runs-on: ubuntu-latest
     steps:
       - name: Run tf scan
-        if: ${{ needs.get_changefile.outputs.has_tf_change == 'true' }}
+        if: ${{ needs.get_changefile.outputs.has_tf_change == 'true' }} || ${{ needs.force_build_setup.outputs.force_build_var == 'true' }}
         run: |
           echo "has_tf_change ===>"${{ needs.get_changefile.outputs.has_tf_change }}
           echo "force_build_var ===>"${{ needs.force_build_setup.outputs.force_build_var }}
