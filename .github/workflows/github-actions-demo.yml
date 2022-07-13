@@ -10,6 +10,13 @@ env:
   
   
 jobs:
+  force_build_setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Decide force_build_var
+        id: set_force_build_var
+        run: |
+          echo "::set-output name=force_build_var::true"
   env_setup:
     runs-on: ubuntu-latest
     outputs:
@@ -66,6 +73,7 @@ jobs:
         if: ${{ needs.get_changefile.outputs.has_tf_change == 'true' }}
         run: |
           echo ${{ needs.get_changefile.outputs.has_tf_change }}
+          echo ${{ needs.force_build_setup.outputs.force_build_var }}
           
           
   Explore-GitHub-Actions:
