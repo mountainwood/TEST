@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run tf scan
-        if: ${{ needs.get_changefile.filecheck.outputs.has_tf_change == 'true' }}
+        if: ${{ needs.get_changefile.outputs.has_tf_change == 'true' }}
         run: |
           echo $has_tf_change
           
