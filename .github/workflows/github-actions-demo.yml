@@ -65,7 +65,7 @@ jobs:
       - name: Run tf scan
         if: ${{ needs.get_changefile.outputs.has_tf_change == 'true' }}
         run: |
-          echo $has_tf_change
+          echo ${{ needs.get_changefile.outputs.has_tf_change }}
           
           
   Explore-GitHub-Actions:
