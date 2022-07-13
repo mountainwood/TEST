@@ -45,11 +45,13 @@ jobs:
         id: filecheck
         run: |
           changeFiles=$(git diff --name-only origin/master...origin/${{ needs.env_setup.outputs.ref_branch }})
-          echo $changeFiles
+          echo "changeFiles ===>"$changeFiles
           for file_name in $changeFiles
           do
+            echo "file_name ===>"$file_name
             if [[ $file_name = deploy/* ]]
             then
+              echo "file_name_check_deploy ===>"$file_name
               echo "file_name is changed: ${file_name}"
               echo "::set-output name=has_tf_change::true"
               exit 0
