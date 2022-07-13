@@ -73,10 +73,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run tf scan
-        if: ${{ needs.get_changefile.outputs.has_tf_change == 'true' }} || ${{ needs.force_build_setup.outputs.force_build_var == 'true' }}
         run: |
-          echo "has_tf_change ===>"${{ needs.get_changefile.outputs.has_tf_change }}
-          echo "force_build_var ===>"${{ needs.force_build_setup.outputs.force_build_var }}
+          if: ${{ needs.get_changefile.outputs.has_tf_change == 'true' }} || ${{ needs.force_build_setup.outputs.force_build_var == 'true' }}
+          then
+            echo "has_tf_change ===>"${{ needs.get_changefile.outputs.has_tf_change }}
+            echo "force_build_var ===>"${{ needs.force_build_setup.outputs.force_build_var }}
+          fi
+            
           
           
   Explore-GitHub-Actions:
