@@ -19,6 +19,7 @@ jobs:
         id: set_force_build_var
         run: |
           echo "::set-output name=force_build_var::true"
+        
   env_setup:
     runs-on: ubuntu-latest
     outputs:
@@ -68,7 +69,7 @@ jobs:
             fi
           done
   Docker-build-step:
-    needs: get_changefile
+    needs: [get_changefile, force_build_setup]
     runs-on: ubuntu-latest
     steps:
       - name: Run tf scan
