@@ -10,6 +10,42 @@ env:
   
   
 jobs:
+  env_setup:
+    runs-on: [runner]
+    outputs:
+      ref_branch: ${{ steps.set_ref_branch.outputs.ref_branch }}
+    steps:
+      - name: Decide the head_ref
+        id: set_ref_branch
+        run: |
+          echo "Trigger event: ${{ github.event_name }}"
+          echo "The ref will be checkout: ${{ github.ref }}"
+          # get REF_BRANCH from different trigger event
+          if [ ${{ github.event_name }} = "pull_request" ]
+          then
+            echo "::set-output name=ref_branch::${{ github.head_ref }}"
+          elif [ ${{ github.event_name }} = "workflow_dispatch" ]
+          then
+            echo "::set-output name=ref_branch::${{ github.ref_name }}"
+          fi
+      - name: Check the ref_branch
+        run: |
+          echo "ref_branch: ${{ steps.set_ref_branch.outputs.ref_branch }}"
+  get_changefile:
+    needs: env_setup
+    runs-on: [runner]
+    outputs:
+      has_tf_change: ${{ steps.filecheck.outputs.has_tf_change }}
+    steps:
+      - uses: AutoModality/action-clean@v1 # must clean workspace
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get changefile
+        id: filecheck
+        run: |
+          changeFiles=$(git diff --name-only origin/master...origin/${{ needs.env_setup.outputs.ref_branch }})
+          echo $(changeFiles)
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
