@@ -46,6 +46,7 @@ jobs:
         run: |
           changeFiles=$(git diff --name-only origin/master...origin/${{ needs.env_setup.outputs.ref_branch }})
           echo $changeFiles
+          for file_name in $changeFiles
           do
             if [[ $file_name = deploy/* ]]
             then
@@ -137,8 +138,3 @@ jobs:
         run: 
           info=$(git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/master)
           echo $(info)
-      - name: Get changefile
-        id: filecheck
-        run: |
-          changeFiles=$(git diff --name-only origin/master...origin/${{ needs.env_setup.outputs.ref_branch }})
-          echo $(changeFiles)
