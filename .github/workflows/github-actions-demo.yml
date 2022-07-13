@@ -45,8 +45,7 @@ jobs:
         id: filecheck
         run: |
           changeFiles=$(git diff --name-only origin/master...origin/${{ needs.env_setup.outputs.ref_branch }})
-          echo $(changeFiles)
-          echo ${changeFiles}
+          echo $changeFiles
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
