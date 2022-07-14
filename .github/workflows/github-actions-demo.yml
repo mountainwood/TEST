@@ -5,6 +5,7 @@ on:
   push:
     branches:
         - master
+        - '**'
 
 env:
   BUILD_VERSION: 'v22-p-test-build-docker-az'
