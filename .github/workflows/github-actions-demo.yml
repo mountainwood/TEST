@@ -30,13 +30,13 @@ jobs:
   docker_tag_generate:
     runs-on: ubuntu-latest
     outputs:
-      DOCKER_TAG: ${{ steps.set_ref_branch.outputs.DOCKER_TAG }}
+      DOCKER_TAG: ${{ steps.set_docker_tag_generate.outputs.DOCKER_TAG }}
     steps:
       - name: new_docker_tag_to_env
         run: |
           docker_tag_info=$(echo ${{ env.BUILD_VERSION }} | sed 's/\//-/g' | sed 's/_/-/g')
           echo "DOCKER_TAG_NEW=${docker_tag_info}" >> $GITHUB_ENV
-          echo "::set-output name=DOCKER_TAG::docker_tag_info"
+          echo "::set-output name=DOCKER_TAG::${docker_tag_info}"
       - name: print new docker tag
         run: |
           echo ${{ needs.docker_tag_generate.outputs.DOCKER_TAG }}
