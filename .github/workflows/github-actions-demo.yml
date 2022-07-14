@@ -8,8 +8,9 @@ on:
         - '**'
 
 env:
-  BUILD_VERSION: 'v22-p-test-build-docker-az'
+  BUILD_VERSION: 'v${{github.RUN_NUMBER}}-${{ github.REF_NAME }}-az'
   BUILD_NAME: 'aws.registry.trendmicro.com/mtdis'
+  GIT_ORIGIN: '${{github.SERVER_URL}}'
   DOCKER_PROXY: "aws.registry.trendmicro.com/etscache/"
   
   
