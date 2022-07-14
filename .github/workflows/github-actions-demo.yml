@@ -102,13 +102,27 @@ jobs:
       - name: Publish backend
         run: |
           echo "Publish Docker-build-backend-build"
-  Comment-PR-publishinfo:
-    needs: [Publish-steps]
+  Git-tag:
+    needs: [Comment-PR-publishinfo]
     runs-on: ubuntu-latest
     steps:
-      - name: Publish fronend
+      - name: Git tag
         run: |
-          echo "Publish Docker-build-fronend-build"
+          echo "Git tag"
+  Comment-PR-publishinfo:
+    needs: [Git-tag]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment-PR-publishinfo
+        run: |
+          echo "Comment-PR-publishinfo"
+  Trigger-Int-Site-Backend-Deploy:
+    needs: [Comment-PR-publishinfo]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger-Int-Site-Backend-Deploy
+        run: |
+          echo "Trigger-Int-Site-Backend-Deploy"
 
             
           
