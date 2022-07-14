@@ -34,7 +34,7 @@ jobs:
           echo "Trigger event: ${{ github.event_name }}"
           echo "The ref will be checkout: ${{ github.ref }}"
           # get REF_BRANCH from different trigger event
-          if [ ${{ github.event_name }} = "pull_request" ] || [ ${{ github.event_name }} = "push" ]
+          if [ ${{ github.event_name }} = "pull_request" || "push" ]
           then
             echo "::set-output name=ref_branch::${{ github.head_ref }}"
           elif [ ${{ github.event_name }} = "workflow_dispatch" ]
