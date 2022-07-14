@@ -40,7 +40,6 @@ jobs:
           elif [ ${{ github.event_name }} = "push" ]
           then
             echo "::set-output name=ref_branch::${{ github.ref_name }}"
-          fi
           elif [ ${{ github.event_name }} = "workflow_dispatch" ]
           then
             echo "::set-output name=ref_branch::${{ github.ref_name }}"
