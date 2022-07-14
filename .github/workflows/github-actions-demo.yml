@@ -45,7 +45,7 @@ jobs:
     needs: env_setup
     runs-on: ubuntu-latest
     outputs:
-      has_tf_change: ${{ steps.filecheck.outputs.has_tf_change }}
+      needToBuildAndPublish: ${{ steps.filecheck.outputs.needToBuildAndPublish }}
     steps:
       - uses: AutoModality/action-clean@v1 # must clean workspace
       - uses: actions/checkout@v3
@@ -64,7 +64,7 @@ jobs:
             then
               echo "file_name_check_deploy ===>"$file_name
               echo "file_name is changed: ${file_name}"
-              echo "::set-output name=has_tf_change::false"
+              echo "::set-output name=needToBuildAndPublish::false"
               exit 0
             fi
           done
@@ -74,9 +74,9 @@ jobs:
     steps:
       - name: Run tf scan
         run: |
-          if ${{ needs.get_changefile.outputs.has_tf_change == 'true' }} || ${{ needs.force_build_setup.outputs.force_build_var == 'true' }}
+          if ${{ needs.get_changefile.outputs.needToBuildAndPublish == 'true' }} || ${{ needs.force_build_setup.outputs.force_build_var == 'true' }}
           then
-            echo "has_tf_change ===>"${{ needs.get_changefile.outputs.has_tf_change }}
+            echo "needToBuildAndPublish ===>"${{ needs.get_changefile.outputs.needToBuildAndPublish }}
             echo "force_build_var ===>"${{ needs.force_build_setup.outputs.force_build_var }}
             echo "Start fronend build docker"
           fi
@@ -86,9 +86,9 @@ jobs:
     steps:
       - name: Run tf scan
         run: |
-          if ${{ needs.get_changefile.outputs.has_tf_change == 'true' }} || ${{ needs.force_build_setup.outputs.force_build_var == 'true' }}
+          if ${{ needs.get_changefile.outputs.needToBuildAndPublish == 'true' }} || ${{ needs.force_build_setup.outputs.force_build_var == 'true' }}
           then
-            echo "has_tf_change ===>"${{ needs.get_changefile.outputs.has_tf_change }}
+            echo "needToBuildAndPublish ===>"${{ needs.get_changefile.outputs.needToBuildAndPublish }}
             echo "force_build_var ===>"${{ needs.force_build_setup.outputs.force_build_var }}
             echo "Start backend build docker"
           fi
@@ -122,9 +122,13 @@ jobs:
     steps:
       - name: Trigger-Int-Site-Backend-Deploy
         run: |
-          echo "equals expected: true ===> actual: needToBuildAndPublish"
-          echo "allof branch name ===> master"
-          echo "Trigger-Int-Site-Backend-Deploy"
+          if ${{ github.event.pull_request.merged == 'true' }} && ${{ needs.get_changefile.outputs.needToBuildAndPublish == 'true' }}
+          if: 
+            echo PR #${{ github.event.number }} has been merged
+            echo "equals expected: true ===> actual: needToBuildAndPublish"
+            echo "allof branch name ===> master"
+            echo "Trigger-Int-Site-Backend-Deploy"
+          fi
 
             
           
