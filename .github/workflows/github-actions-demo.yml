@@ -102,6 +102,14 @@ jobs:
       - name: Publish backend
         run: |
           echo "Publish Docker-build-backend-build"
+  Comment-PR-publishinfo:
+    needs: [Publish-steps]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish fronend
+        run: |
+          echo "Publish Docker-build-fronend-build"
+
             
           
           
