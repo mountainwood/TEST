@@ -1,14 +1,18 @@
 name: GitHub Actions Demo
 on:
-  pull_request:
-    types: [opened, synchronize, labeled]
+  #pull_request:
+    #types: [opened, synchronize, labeled]
   push:
     branches:
         - master
         - '**'
 
 env:
-  BUILD_VERSION: 'v22-p-test-build-docker-az'
+  BUILD_VERSION: 'v${{ github.RUN_NUMBER }}-${{ github.REF_NAME }}-az'
+  GIT_ORIGIN: '${{ github.SERVER_URL }}'
+  CUR_REPO: '${{ github.REPOSITORY  }}'
+  CRED: '${{ secrets.GITHUB_TOKEN }}'
+  
   BUILD_NAME: 'aws.registry.trendmicro.com/mtdis'
   DOCKER_PROXY: "aws.registry.trendmicro.com/etscache/"
   
@@ -23,8 +27,22 @@ jobs:
         id: set_force_build_var
         run: |
           echo "::set-output name=force_build_var::false"
-        
+  docker_tag_generate:
+    runs-on: ubuntu-latest
+    outputs:
+      DOCKER_TAG: ${{ steps.set_docker_tag_generate.outputs.docker_tag }}
+    steps:
+      - name: new_docker_tag_to_env
+        id: set_docker_tag_generate
+        run: |
+          docker_tag_info=$(echo ${{ env.BUILD_VERSION }} | sed 's/\//-/g' | sed 's/_/-/g')
+          echo "DOCKER_TAG_NEW=${docker_tag_info}" >> $GITHUB_ENV
+          echo "::set-output name=docker_tag::${docker_tag_info}"
+      - name: print new docker tag
+        run: |
+          echo ${{ needs.docker_tag_generate.outputs.DOCKER_TAG }}
   env_setup:
+    needs: docker_tag_generate
     runs-on: ubuntu-latest
     outputs:
       ref_branch: ${{ steps.set_ref_branch.outputs.ref_branch }}
@@ -32,6 +50,7 @@ jobs:
       - name: Decide the head_ref
         id: set_ref_branch
         run: |
+          echo "DOCKER_TAG ===>"${{ needs.docker_tag_generate.outputs.docker_tag }}
           echo "Trigger event: ${{ github.event_name }}"
           echo "The ref will be checkout: ${{ github.ref }}"
           # get REF_BRANCH from different trigger event
@@ -66,8 +85,8 @@ jobs:
           for file_name in $changeFiles
           do
             echo "file_name ===>"$file_name
-            #if [[ $file_name = deploy/* ]]
-            if [[ $file_name = .github/* ]]
+            if [[ $file_name != deploy/* ]]
+            #if [[ $file_name = .github/* ]]
             then
               echo "file_name_check_deploy ===>"$file_name
               echo "file_name is changed: ${file_name}"
@@ -76,7 +95,7 @@ jobs:
             fi
           done
   Docker-build-fronend-build:
-    needs: [get_changefile, force_build_setup]
+    needs: [docker_tag_generate,get_changefile, force_build_setup]
     runs-on: ubuntu-latest
     steps:
       - name: Run tf scan
@@ -86,9 +105,10 @@ jobs:
             echo "needToBuildAndPublish ===>"${{ needs.get_changefile.outputs.needToBuildAndPublish }}
             echo "force_build_var ===>"${{ needs.force_build_setup.outputs.force_build_var }}
             echo "Start fronend build docker"
+            echo "DOCKER_TAG ===>"${{ needs.docker_tag_generate.outputs.docker_tag }}
           fi
   Docker-build-backend-build:
-    needs: [get_changefile, force_build_setup]
+    needs: [docker_tag_generate,get_changefile, force_build_setup]
     runs-on: ubuntu-latest
     steps:
       - name: Run tf scan
@@ -98,6 +118,7 @@ jobs:
             echo "needToBuildAndPublish ===>"${{ needs.get_changefile.outputs.needToBuildAndPublish }}
             echo "force_build_var ===>"${{ needs.force_build_setup.outputs.force_build_var }}
             echo "Start backend build docker"
+            echo "DOCKER_TAG ===>"${{ needs.docker_tag_generate.outputs.docker_tag }}
           fi
   Publish-steps:
     needs: [Docker-build-fronend-build, Docker-build-backend-build]
@@ -222,6 +243,5 @@ jobs:
       - name: symbolic
         run: 
           info=$(git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/master)
-          echo $(info)
           echo $(info)
           echo $(info)
