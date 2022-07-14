@@ -9,7 +9,6 @@ on:
 
 env:
   BUILD_VERSION: 'v${{ github.RUN_NUMBER }}-${{ github.REF_NAME }}-az'
-  DOCKER_TAG: ''
   GIT_ORIGIN: '${{ github.SERVER_URL }}'
   CUR_REPO: '${{ github.REPOSITORY  }}'
   CRED: '${{ secrets.GITHUB_TOKEN }}'
