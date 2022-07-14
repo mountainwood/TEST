@@ -2,9 +2,7 @@ name: GitHub Actions Demo
 on:
   pull_request:
     types: [opened, synchronize, labeled]
-  push:
-    branches:
-        - master
+
 
 env:
   BUILD_VERSION: 'v22-p-test-build-docker-az'
