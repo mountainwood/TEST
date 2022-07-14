@@ -123,6 +123,7 @@ jobs:
       - name: Trigger-Int-Site-Backend-Deploy
         run: |
           if ${{ github.event.pull_request.merged == 'true' }} && ${{ needs.get_changefile.outputs.needToBuildAndPublish == 'true' }}
+          then
             echo PR #${{ github.event.number }} has been merged
             echo "equals expected: true ===> actual: needToBuildAndPublish"
             echo "allof branch name ===> master"
