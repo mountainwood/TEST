@@ -70,7 +70,7 @@ jobs:
             then
               echo "file_name_check_deploy ===>"$file_name
               echo "file_name is changed: ${file_name}"
-              echo "::set-output name=needToBuildAndPublish::false"
+              echo "::set-output name=needToBuildAndPublish::true"
               exit 0
             fi
           done
