@@ -92,7 +92,7 @@ jobs:
             echo "force_build_var ===>"${{ needs.force_build_setup.outputs.force_build_var }}
             echo "Start backend build docker"
           fi
-  Publish-backend:
+  Publish-steps:
     needs: [Docker-build-fronend-build, Docker-build-backend-build]
     runs-on: ubuntu-latest
     steps:
