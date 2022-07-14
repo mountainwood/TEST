@@ -122,6 +122,8 @@ jobs:
     steps:
       - name: Trigger-Int-Site-Backend-Deploy
         run: |
+          echo "equals expected: true ===> actual: needToBuildAndPublish"
+          echo "allof branch name ===> master"
           echo "Trigger-Int-Site-Backend-Deploy"
 
             
