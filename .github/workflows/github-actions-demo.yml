@@ -64,7 +64,7 @@ jobs:
             then
               echo "file_name_check_deploy ===>"$file_name
               echo "file_name is changed: ${file_name}"
-              echo "::set-output name=has_tf_change::false"
+              echo "::set-output name=has_tf_change::true"
               exit 0
             fi
           done
@@ -74,7 +74,7 @@ jobs:
     steps:
       - name: Run tf scan
         run: |
-          if  ${{ needs.get_changefile.outputs.has_tf_change == 'false' }} 
+          if  ${{ needs.get_changefile.outputs.has_tf_change == 'true' }} || ${{ needs.force_build_setup.outputs.force_build_var == 'true' }}
           then
             echo "has_tf_change ===>"${{ needs.get_changefile.outputs.has_tf_change }}
             echo "force_build_var ===>"${{ needs.force_build_setup.outputs.force_build_var }}
