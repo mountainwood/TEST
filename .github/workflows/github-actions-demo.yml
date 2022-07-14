@@ -10,6 +10,129 @@ env:
   
   
 jobs:
+  force_build_setup:
+    runs-on: ubuntu-latest
+    outputs:
+      force_build_var: ${{ steps.set_force_build_var.outputs.force_build_var }}
+    steps:
+      - name: Decide force_build_var
+        id: set_force_build_var
+        run: |
+          echo "::set-output name=force_build_var::false"
+        
+  env_setup:
+    runs-on: ubuntu-latest
+    outputs:
+      ref_branch: ${{ steps.set_ref_branch.outputs.ref_branch }}
+    steps:
+      - name: Decide the head_ref
+        id: set_ref_branch
+        run: |
+          echo "Trigger event: ${{ github.event_name }}"
+          echo "The ref will be checkout: ${{ github.ref }}"
+          # get REF_BRANCH from different trigger event
+          if [ ${{ github.event_name }} = "pull_request" ]
+          then
+            echo "::set-output name=ref_branch::${{ github.head_ref }}"
+          elif [ ${{ github.event_name }} = "workflow_dispatch" ]
+          then
+            echo "::set-output name=ref_branch::${{ github.ref_name }}"
+          fi
+      - name: Check the ref_branch
+        run: |
+          echo "ref_branch: ${{ steps.set_ref_branch.outputs.ref_branch }}"
+  get_changefile:
+    needs: env_setup
+    runs-on: ubuntu-latest
+    outputs:
+      needToBuildAndPublish: ${{ steps.filecheck.outputs.needToBuildAndPublish }}
+    steps:
+      - uses: AutoModality/action-clean@v1 # must clean workspace
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get changefile
+        id: filecheck
+        run: |
+          changeFiles=$(git diff --name-only origin/master...origin/${{ needs.env_setup.outputs.ref_branch }})
+          echo "changeFiles ===>"$changeFiles
+          for file_name in $changeFiles
+          do
+            echo "file_name ===>"$file_name
+            #if [[ $file_name = deploy/* ]]
+            if [[ $file_name = .github/* ]]
+            then
+              echo "file_name_check_deploy ===>"$file_name
+              echo "file_name is changed: ${file_name}"
+              echo "::set-output name=needToBuildAndPublish::false"
+              exit 0
+            fi
+          done
+  Docker-build-fronend-build:
+    needs: [get_changefile, force_build_setup]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run tf scan
+        run: |
+          if ${{ needs.get_changefile.outputs.needToBuildAndPublish == 'true' }} || ${{ needs.force_build_setup.outputs.force_build_var == 'true' }}
+          then
+            echo "needToBuildAndPublish ===>"${{ needs.get_changefile.outputs.needToBuildAndPublish }}
+            echo "force_build_var ===>"${{ needs.force_build_setup.outputs.force_build_var }}
+            echo "Start fronend build docker"
+          fi
+  Docker-build-backend-build:
+    needs: [get_changefile, force_build_setup]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run tf scan
+        run: |
+          if ${{ needs.get_changefile.outputs.needToBuildAndPublish == 'true' }} || ${{ needs.force_build_setup.outputs.force_build_var == 'true' }}
+          then
+            echo "needToBuildAndPublish ===>"${{ needs.get_changefile.outputs.needToBuildAndPublish }}
+            echo "force_build_var ===>"${{ needs.force_build_setup.outputs.force_build_var }}
+            echo "Start backend build docker"
+          fi
+  Publish-steps:
+    needs: [Docker-build-fronend-build, Docker-build-backend-build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish fronend
+        run: |
+          echo "Publish Docker-build-fronend-build"
+      - name: Publish backend
+        run: |
+          echo "Publish Docker-build-backend-build"
+  Git-tag:
+    needs: Publish-steps
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git tag
+        run: |
+          echo "Git tag"
+  Comment-PR-publishinfo:
+    needs: Git-tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment-PR-publishinfo
+        run: |
+          echo "Comment-PR-publishinfo"
+  Trigger-Int-Site-Backend-Deploy:
+    needs: [get_changefile,Publish-steps,Git-tag,Comment-PR-publishinfo]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger-Int-Site-Backend-Deploy
+        run: |
+          if ${{ github.event.pull_request.merged == 'true' }} && ${{ needs.get_changefile.outputs.needToBuildAndPublish == 'true' }}
+          then
+            echo PR #${{ github.event.number }} has been merged
+            echo "equals expected: true ===> actual: needToBuildAndPublish"
+            echo "allof branch name ===> master"
+            echo "Trigger-Int-Site-Backend-Deploy"
+          fi
+
+            
+          
+          
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
@@ -65,3 +188,31 @@ jobs:
           echo "github.event.number = "${{ github.event.number  }}
           echo github.event.pull_request.number = ${{ github.event.pull_request.number }}
           echo github.event.issue.number = ${{ github.event.issue.number }}
+      - name: Decide the head_ref
+        id: set_ref_branch
+        run: |
+          echo "Trigger event: ${{ github.event_name }}"
+          echo "The ref will be checkout: ${{ github.ref }}"
+          # get REF_BRANCH from different trigger event
+          if [ ${{ github.event_name }} = "pull_request" ]
+          then
+            echo "::set-output name=ref_branch::${{ github.head_ref }}"
+          elif [ ${{ github.event_name }} = "workflow_dispatch" ]
+          then
+            echo "::set-output name=ref_branch::${{ github.ref_name }}"
+          fi
+      - name: Check the ref_branch
+        run: |
+          echo "ref_branch: ${{ steps.set_ref_branch.outputs.ref_branch }}"
+      - name: query origin or not
+        run: 
+          info=$(git branch -r)
+          echo $(info)
+      - name: git branch a
+        run: 
+          info=$(git branch -a)
+          echo $(info)
+      - name: symbolic
+        run: 
+          info=$(git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/master)
+          echo $(info)
