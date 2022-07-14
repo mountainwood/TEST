@@ -35,6 +35,9 @@ jobs:
           RAW_DOCKER_TAG="v${{ github.RUN_NUMBER }}-${{ github.REF_NAME }}-az"
           DOCKER_TAG=$(echo $RAW_DOCKER_TAG | sed 's/\//-/g' | sed 's/_/-/g')
           echo "DOCKER_TAG=${DOCKER_TAG}" >> $GITHUB_ENV 
+      - name: print new docker tag
+        run: |
+          echo ${{ env.DOCKER_TAG }}
   env_setup:
     needs: docker_tag_generate
     runs-on: ubuntu-latest
