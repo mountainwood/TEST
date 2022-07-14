@@ -34,9 +34,12 @@ jobs:
           echo "Trigger event: ${{ github.event_name }}"
           echo "The ref will be checkout: ${{ github.ref }}"
           # get REF_BRANCH from different trigger event
-          if [ ${{ github.event_name }} = "pull_request" ] || [ ${{ github.event_name }} = "push" ]
+          if [ ${{ github.event_name }} = "pull_request" ]
           then
             echo "::set-output name=ref_branch::${{ github.head_ref }}"
+          elif [ ${{ github.event_name }} = "push" ]
+          then
+            echo "::set-output name=ref_branch::${{ github.ref_name }}"
           elif [ ${{ github.event_name }} = "workflow_dispatch" ]
           then
             echo "::set-output name=ref_branch::${{ github.ref_name }}"
@@ -67,7 +70,7 @@ jobs:
             then
               echo "file_name_check_deploy ===>"$file_name
               echo "file_name is changed: ${file_name}"
-              echo "::set-output name=needToBuildAndPublish::false"
+              echo "::set-output name=needToBuildAndPublish::true"
               exit 0
             fi
           done
