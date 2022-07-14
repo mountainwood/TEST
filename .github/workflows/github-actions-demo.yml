@@ -78,6 +78,7 @@ jobs:
           then
             echo "has_tf_change ===>"${{ needs.get_changefile.outputs.has_tf_change }}
             echo "force_build_var ===>"${{ needs.force_build_setup.outputs.force_build_var }}
+            echo "Start build docker"
           fi
             
           
