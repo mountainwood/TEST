@@ -64,7 +64,7 @@ jobs:
             then
               echo "file_name_check_deploy ===>"$file_name
               echo "file_name is changed: ${file_name}"
-              echo "::set-output name=has_tf_change::true"
+              echo "::set-output name=has_tf_change::false"
               exit 0
             fi
           done
