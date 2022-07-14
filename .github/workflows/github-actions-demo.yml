@@ -30,13 +30,14 @@ jobs:
   docker_tag_generate:
     runs-on: ubuntu-latest
     outputs:
-      DOCKER_TAG: ${{ steps.set_docker_tag_generate.outputs.DOCKER_TAG }}
+      DOCKER_TAG: ${{ steps.set_docker_tag_generate.outputs.docker_tag }}
     steps:
       - name: new_docker_tag_to_env
+        id: set_docker_tag_generate
         run: |
           docker_tag_info=$(echo ${{ env.BUILD_VERSION }} | sed 's/\//-/g' | sed 's/_/-/g')
           echo "DOCKER_TAG_NEW=${docker_tag_info}" >> $GITHUB_ENV
-          echo "::set-output name=DOCKER_TAG::${docker_tag_info}"
+          echo "::set-output name=docker_tag::${docker_tag_info}"
       - name: print new docker tag
         run: |
           echo ${{ needs.docker_tag_generate.outputs.DOCKER_TAG }}
@@ -49,7 +50,7 @@ jobs:
       - name: Decide the head_ref
         id: set_ref_branch
         run: |
-          echo "DOCKER_TAG ===>"${{ needs.docker_tag_generate.outputs.DOCKER_TAG }}
+          echo "DOCKER_TAG ===>"${{ needs.docker_tag_generate.outputs.docker_tag }}
           echo "Trigger event: ${{ github.event_name }}"
           echo "The ref will be checkout: ${{ github.ref }}"
           # get REF_BRANCH from different trigger event
