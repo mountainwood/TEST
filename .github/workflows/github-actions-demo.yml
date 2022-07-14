@@ -35,7 +35,7 @@ jobs:
       - name: new_docker_tag_to_env
         run: |
           docker_tag_info=$(echo $BUILD_VERSION | sed 's/\//-/g' | sed 's/_/-/g')
-          echo "::set-output name=DOCKER_TAG::docker_tag_info
+          echo "::set-output name=DOCKER_TAG::docker_tag_info"
       - name: print new docker tag
         run: |
           echo ${{ needs.docker_tag_generate.outputs.DOCKER_TAG }}
