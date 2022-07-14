@@ -5,6 +5,7 @@ on:
   push:
     branches:
         - master
+        - '**'
 
 env:
   BUILD_VERSION: 'v22-p-test-build-docker-az'
@@ -221,5 +222,6 @@ jobs:
       - name: symbolic
         run: 
           info=$(git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/master)
+          echo $(info)
           echo $(info)
           echo $(info)
