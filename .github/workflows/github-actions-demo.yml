@@ -95,7 +95,7 @@ jobs:
             fi
           done
   Docker-build-fronend-build:
-    needs: [get_changefile, force_build_setup]
+    needs: [docker_tag_generate,get_changefile, force_build_setup]
     runs-on: ubuntu-latest
     steps:
       - name: Run tf scan
@@ -108,7 +108,7 @@ jobs:
             echo "DOCKER_TAG ===>"${{ needs.docker_tag_generate.outputs.docker_tag }}
           fi
   Docker-build-backend-build:
-    needs: [get_changefile, force_build_setup]
+    needs: [docker_tag_generate,get_changefile, force_build_setup]
     runs-on: ubuntu-latest
     steps:
       - name: Run tf scan
