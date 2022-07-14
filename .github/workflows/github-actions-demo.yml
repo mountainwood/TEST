@@ -68,7 +68,7 @@ jobs:
               exit 0
             fi
           done
-  Docker-build-ornot:
+  Docker-build-fronend-build:
     needs: [get_changefile, force_build_setup]
     runs-on: ubuntu-latest
     steps:
@@ -78,7 +78,19 @@ jobs:
           then
             echo "has_tf_change ===>"${{ needs.get_changefile.outputs.has_tf_change }}
             echo "force_build_var ===>"${{ needs.force_build_setup.outputs.force_build_var }}
-            echo "Start build docker"
+            echo "Start fronend build docker"
+          fi
+  Docker-build-backend-build:
+    needs: [get_changefile, force_build_setup]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run tf scan
+        run: |
+          if  ${{ needs.get_changefile.outputs.has_tf_change == 'true' }} || ${{ needs.force_build_setup.outputs.force_build_var == 'true' }}
+          then
+            echo "has_tf_change ===>"${{ needs.get_changefile.outputs.has_tf_change }}
+            echo "force_build_var ===>"${{ needs.force_build_setup.outputs.force_build_var }}
+            echo "Start backend build docker"
           fi
             
           
