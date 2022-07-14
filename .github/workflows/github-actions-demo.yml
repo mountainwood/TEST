@@ -105,7 +105,7 @@ jobs:
             echo "needToBuildAndPublish ===>"${{ needs.get_changefile.outputs.needToBuildAndPublish }}
             echo "force_build_var ===>"${{ needs.force_build_setup.outputs.force_build_var }}
             echo "Start fronend build docker"
-            echo ${{ env.DOCKER_TAG }}
+            echo "DOCKER_TAG ===>"${{ needs.docker_tag_generate.outputs.docker_tag }}
           fi
   Docker-build-backend-build:
     needs: [get_changefile, force_build_setup]
@@ -118,7 +118,7 @@ jobs:
             echo "needToBuildAndPublish ===>"${{ needs.get_changefile.outputs.needToBuildAndPublish }}
             echo "force_build_var ===>"${{ needs.force_build_setup.outputs.force_build_var }}
             echo "Start backend build docker"
-            echo ${{ env.DOCKER_TAG }}
+            echo "DOCKER_TAG ===>"${{ needs.docker_tag_generate.outputs.docker_tag }}
           fi
   Publish-steps:
     needs: [Docker-build-fronend-build, Docker-build-backend-build]
