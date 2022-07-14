@@ -66,8 +66,8 @@ jobs:
           for file_name in $changeFiles
           do
             echo "file_name ===>"$file_name
-            #if [[ $file_name = deploy/* ]]
-            if [[ $file_name = .github/* ]]
+            if [[ $file_name != deploy/* ]]
+            #if [[ $file_name = .github/* ]]
             then
               echo "file_name_check_deploy ===>"$file_name
               echo "file_name is changed: ${file_name}"
