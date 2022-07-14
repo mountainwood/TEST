@@ -33,7 +33,7 @@ jobs:
     steps:
       - name: new_docker_tag_to_env
         run: |
-          RAW_DOCKER_TAG="v${{github.RUN_NUMBER}}-${{ github.REF_NAME }}-az"
+          RAW_DOCKER_TAG="v${{ github.RUN_NUMBER }}-${{ github.REF_NAME }}-az"
           DOCKER_TAG=$(echo $RAW_BUILD_VERSION | sed 's/\//-/g' | sed 's/_/-/g')
           echo "DOCKER_TAG=${DOCKER_TAG}" >> $GITHUB_ENV 
   env_setup:
@@ -99,6 +99,7 @@ jobs:
             echo "needToBuildAndPublish ===>"${{ needs.get_changefile.outputs.needToBuildAndPublish }}
             echo "force_build_var ===>"${{ needs.force_build_setup.outputs.force_build_var }}
             echo "Start fronend build docker"
+            echo ${{ env.DOCKER_TAG }}
           fi
   Docker-build-backend-build:
     needs: [get_changefile, force_build_setup]
@@ -111,6 +112,7 @@ jobs:
             echo "needToBuildAndPublish ===>"${{ needs.get_changefile.outputs.needToBuildAndPublish }}
             echo "force_build_var ===>"${{ needs.force_build_setup.outputs.force_build_var }}
             echo "Start backend build docker"
+            echo ${{ env.DOCKER_TAG }}
           fi
   Publish-steps:
     needs: [Docker-build-fronend-build, Docker-build-backend-build]
