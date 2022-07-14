@@ -103,21 +103,21 @@ jobs:
         run: |
           echo "Publish Docker-build-backend-build"
   Git-tag:
-    needs: [Comment-PR-publishinfo]
+    needs: Publish-steps
     runs-on: ubuntu-latest
     steps:
       - name: Git tag
         run: |
           echo "Git tag"
   Comment-PR-publishinfo:
-    needs: [Git-tag]
+    needs: Git-tag
     runs-on: ubuntu-latest
     steps:
       - name: Comment-PR-publishinfo
         run: |
           echo "Comment-PR-publishinfo"
   Trigger-Int-Site-Backend-Deploy:
-    needs: [Comment-PR-publishinfo]
+    needs: [get_changefile,Publish-steps,Git-tag,Comment-PR-publishinfo]
     runs-on: ubuntu-latest
     steps:
       - name: Trigger-Int-Site-Backend-Deploy
