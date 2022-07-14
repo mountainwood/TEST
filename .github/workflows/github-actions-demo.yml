@@ -82,14 +82,16 @@ jobs:
           fi
   Docker-build-backend-build:
     needs: [get_changefile, force_build_setup]
-    if: ${{ needs.get_changefile.outputs.has_tf_change == 'true' }} || ${{ needs.force_build_setup.outputs.force_build_var == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Run tf scan
         run: |
-          echo "has_tf_change ===>"${{ needs.get_changefile.outputs.has_tf_change }}
-          echo "force_build_var ===>"${{ needs.force_build_setup.outputs.force_build_var }}
-          echo "Start backend build docker"
+          if  ${{ needs.get_changefile.outputs.has_tf_change == 'true' }} || ${{ needs.force_build_setup.outputs.force_build_var == 'true' }}
+          then
+            echo "has_tf_change ===>"${{ needs.get_changefile.outputs.has_tf_change }}
+            echo "force_build_var ===>"${{ needs.force_build_setup.outputs.force_build_var }}
+            echo "Start backend build docker"
+          fi"
             
           
           
