@@ -37,7 +37,7 @@ jobs:
           elif [ ${{ github.event_name }} = "workflow_dispatch" ]
           then
             echo "::set-output name=ref_branch::${{ github.ref_name }}"
-          fi
+          fi"
       - name: Check the ref_branch
         run: |
           echo "ref_branch: ${{ steps.set_ref_branch.outputs.ref_branch }}"
