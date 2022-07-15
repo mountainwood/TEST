@@ -19,24 +19,7 @@ env:
   DOCKER_PROXY: "aws.registry.trendmicro.com/etscache/"
   
   
-jobs:
-  Git-api:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-           registry: aws.registry.trendmicro.com
-           username: ${{ secrets.TH_HARBOR_ROBOT_ACCOUNT }}
-           password: ${{ secrets.TH_HARBOR_ROBOT_ACCOUNT_PWD }}
-      - name: Github API
-        run: |
-          curl --request POST \
-          --url ${{github.SERVER_URL}}/api/v3/repos/${{ github.REPOSITORY }}/git/refs \
-          --header 'Content-Type: application/json' \
-          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          --data '{"ref": "refs/tags/${{ env.BUILD_VERSION_NEW }}", "sha": "${{ github.sha }}"}'
-     
+jobs:     
   force_build_setup:
     runs-on: ubuntu-latest
     outputs:
@@ -159,6 +142,8 @@ jobs:
   Comment-PR-publishinfo:
     needs: Git-tag
     runs-on: ubuntu-latest
+    outputs:
+      pull_request_number: ${{ steps.pr.outputs.needToBuildAndPublish }}
     steps:
       - name: Comment-PR-publishinfo
         run: |
@@ -170,6 +155,13 @@ jobs:
           echo "ggh ===>"$(gh pr view --json number -q .number || echo "")
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  Print-Comment-PR-publishinfo:
+    needs: Comment-PR-publishinfo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print-Comment-PR-publishinfo
+        run: |
+          echo "pull_request_number ===>"${{ needs.Comment-PR-publishinfo.outputs.pull_request_number }}
   Trigger-Int-Site-Backend-Deploy:
     needs: [get_changefile,Publish-steps,Git-tag,Comment-PR-publishinfo]
     runs-on: ubuntu-latest
