@@ -1,11 +1,11 @@
 name: GitHub Actions Demo
 on:
-  #pull_request:
+  pull_request:
     #types: [opened, synchronize, labeled]
-  push:
-    branches:
-        - master
-        - '**'
+  #push:
+    #branches:
+        #- master
+        #- '**'
 
 env:
   BUILD_VERSION: 'v${{ github.RUN_NUMBER }}-${{ github.REF_NAME }}-az'
