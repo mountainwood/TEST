@@ -162,6 +162,11 @@ jobs:
       - name: Print-Comment-PR-publishinfo
         run: |
           echo "pull_request_number ===>"${{ needs.Comment-PR-publishinfo.outputs.pull_request_number }}
+      - name: Get Pull Request Number method two
+        run: |
+          echo github.event.number = ${{ github.event.number  }}
+          echo github.event.pull_request.number = ${{ github.event.pull_request.number }}
+          echo github.event.issue.number = ${{ github.event.issue.number }}
   Trigger-Int-Site-Backend-Deploy:
     needs: [get_changefile,Publish-steps,Git-tag,Comment-PR-publishinfo]
     runs-on: ubuntu-latest
@@ -261,5 +266,4 @@ jobs:
       - name: symbolic
         run: 
           info=$(git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/master)
-          echo $(info)
           echo $(info)
