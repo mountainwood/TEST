@@ -12,7 +12,7 @@ env:
   GIT_ORIGIN: '${{ github.SERVER_URL }}'
   CUR_REPO: '${{ github.REPOSITORY  }}'
   CRED: '${{ secrets.GITHUB_TOKEN }}'
-  TEST: '$${{ secrets.EE_KKY_CR }}'
+  EE_KKY_CR: '${{ secrets.EE_KKY_CR }}'
   
   BUILD_NAME: 'aws.registry.trendmicro.com/mtdis'
   DOCKER_PROXY: "aws.registry.trendmicro.com/etscache/"
