@@ -156,7 +156,7 @@ jobs:
            password: ${{ secrets.POI }}
       - name: Github API
         run: |
-          curl -vvv '${{github.SERVER_URL}}/api/v3/repos/${{ github.REPOSITORY }}/git/refs' \
+          curl -vvv '${{github.SERVER_URL}}/${{ github.REPOSITORY }}/git/refs' \
           -H 'Content-Type: application/json' \
           -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
           -X POST \
@@ -195,7 +195,7 @@ jobs:
           echo github.event.issue.number = ${{ github.event.issue.number }}
       - name: Comment PR publish info by API
         run: |
-          curl -vvv '${{ github.SERVER_URL }}/api/v3/repos/${{ github.REPOSITORY }}/issues/${{ github.event.pull_request.number }}/comments' -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' -H 'Content-Type: application/vnd.github.VERSION.full' -d '{"body": "Your Message to Comment"}'
+          curl -vvv '${{ github.SERVER_URL }}/${{ github.REPOSITORY }}/issues/${{ github.event.pull_request.number }}/comments' -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' -H 'Content-Type: application/vnd.github.VERSION.full' -d '{"body": "Your Message to Comment"}'
   Trigger-Int-Site-Backend-Deploy:
     needs: [get_changefile,Publish-steps,Git-tag,Comment-PR-publishinfo]
     runs-on: ubuntu-latest
