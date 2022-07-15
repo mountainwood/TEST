@@ -5,7 +5,7 @@ on:
   #push:
     #branches:
         #- master
-        #- '**'
+        ##- '**'
 
 env:
   BUILD_VERSION: 'v${{ github.RUN_NUMBER }}-${{ github.REF_NAME }}-az'
@@ -148,20 +148,6 @@ jobs:
       - name: Comment-PR-publishinfo
         run: |
           echo "Comment-PR-publishinfo"
-      - name: Get Pull Request Number
-        id: pr
-        run: |
-          echo "::set-output name=pull_request_number::$(gh pr view --json number -q .number || echo "")"
-          echo "ggh ===>"$(gh pr view --json number -q .number || echo "")
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  Print-Comment-PR-publishinfo:
-    needs: Comment-PR-publishinfo
-    runs-on: ubuntu-latest
-    steps:
-      - name: Print-Comment-PR-publishinfo
-        run: |
-          echo "pull_request_number ===>"${{ needs.Comment-PR-publishinfo.outputs.pull_request_number }}
       - name: Get Pull Request Number method two
         run: |
           echo github.event.number = ${{ github.event.number  }}
