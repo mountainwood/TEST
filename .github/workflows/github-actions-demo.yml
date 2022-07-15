@@ -14,6 +14,7 @@ env:
   CRED: '${{ secrets.GITHUB_TOKEN }}'
   EE_KKY_CR: '${{ secrets.EE_KKY_CR }}'
   MY_TT_KEY: '${{ secrets.MY_TT_KEY }}'
+  ppp: '${{ secrets.PPP }}'
   
   BUILD_NAME: 'aws.registry.trendmicro.com/mtdis'
   DOCKER_PROXY: "aws.registry.trendmicro.com/etscache/"
