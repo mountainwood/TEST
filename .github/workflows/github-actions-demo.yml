@@ -143,12 +143,12 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v3
         with:
-          repository: Commercial-Luwak/xdr-app-threat-hunting
+          repository: mountainwood/TEST
           fetch-depth: 0
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
-           registry: aws.registry.trendmicro.com
+           registry: github.com/
            username: ${{ secrets.NAME }}
            password: ${{ secrets.POI }}
       - name: Github API
