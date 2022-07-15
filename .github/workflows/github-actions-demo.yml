@@ -163,6 +163,13 @@ jobs:
       - name: Comment-PR-publishinfo
         run: |
           echo "Comment-PR-publishinfo"
+      - name: Get Pull Request Number
+        id: pr
+        run: |
+          echo "::set-output name=pull_request_number::$(gh pr view --json number -q .number || echo "")"
+          echo "ggh ===>"$(gh pr view --json number -q .number || echo "")
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   Trigger-Int-Site-Backend-Deploy:
     needs: [get_changefile,Publish-steps,Git-tag,Comment-PR-publishinfo]
     runs-on: ubuntu-latest
