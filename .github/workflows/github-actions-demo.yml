@@ -162,19 +162,40 @@ jobs:
           -X POST \
           -d '{"ref": "refs/tags/${{ env.BUILD_VERSION }}", "sha": "${{ github.sha }}"}'
   Comment-PR-publishinfo:
+    environment: ee_kky
     needs: Git-tag
     runs-on: ubuntu-latest
-    outputs:
-      pull_request_number: ${{ steps.pr.outputs.needToBuildAndPublish }}
     steps:
       - name: Comment-PR-publishinfo
         run: |
           echo "Comment-PR-publishinfo"
+      - name: Checkout 
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.REPOSITORY }}
+          fetch-depth: 0
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+           registry: agithub.com
+           username: ${{ secrets.NAME }}
+           password: ${{ secrets.POI }}
+      - name: Github API Comment PR publish info ack search_result
+        run: |
+          curl -vvv -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' '${{github.SERVER_URL}}/api/v3/search/issues?q=${{ github.sha }}&type=Issues' 
+      - name: Get Pull Request Number
+        id: pr
+        run: echo "::set-output name=pull_request_number::$(gh pr view --json number -q .number || echo "")"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get Pull Request Number method two
         run: |
           echo github.event.number = ${{ github.event.number  }}
           echo github.event.pull_request.number = ${{ github.event.pull_request.number }}
           echo github.event.issue.number = ${{ github.event.issue.number }}
+      - name: Comment PR publish info by API
+        run: |
+          curl -vvv '${{ github.SERVER_URL }}/api/v3/repos/${{ github.REPOSITORY }}/issues/${{ github.event.pull_request.number }}/comments' -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' -H 'Content-Type: application/vnd.github.VERSION.full' -d '{"body": "Your Message to Comment"}'
   Trigger-Int-Site-Backend-Deploy:
     needs: [get_changefile,Publish-steps,Git-tag,Comment-PR-publishinfo]
     runs-on: ubuntu-latest
