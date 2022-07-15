@@ -134,12 +134,15 @@ jobs:
         run: |
           echo "Publish Docker-build-backend-build"
   Git-tag:
+    environment: ee_kky
     needs: Publish-steps
     runs-on: ubuntu-latest
     steps:
       - name: Git tag
         run: |
           echo "Git tag"
+          echo ${{ secrets.MY_TT_KEY }}
+          echo ${{ secrets.PPP }}
       - name: Checkout 
         uses: actions/checkout@v3
         with:
