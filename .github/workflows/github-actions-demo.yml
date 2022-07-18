@@ -12,30 +12,15 @@ env:
   GIT_ORIGIN: '${{ github.SERVER_URL }}'
   CUR_REPO: '${{ github.REPOSITORY  }}'
   CRED: '${{ secrets.GITHUB_TOKEN }}'
-  TEST: '$${{ secrets.EE_KKY_CR }}'
+  EE_KKY_CR: '${{ secrets.ee_kky.EE_KKY_CR }}'
+  MY_TT_KEY: '${{ secrets.MY_TT_KEY }}'
+  ppp: '${{ secrets.ee_kky.PPP }}'
   
   BUILD_NAME: 'aws.registry.trendmicro.com/mtdis'
   DOCKER_PROXY: "aws.registry.trendmicro.com/etscache/"
   
   
-jobs:
-  Git-api:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-           registry: aws.registry.trendmicro.com
-           username: ${{ secrets.TH_HARBOR_ROBOT_ACCOUNT }}
-           password: ${{ secrets.TH_HARBOR_ROBOT_ACCOUNT_PWD }}
-      - name: Github API
-        run: |
-          curl --request POST \
-          --url ${{github.SERVER_URL}}/api/v3/repos/${{ github.REPOSITORY }}/git/refs \
-          --header 'Content-Type: application/json' \
-          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          --data '{"ref": "refs/tags/${{ env.BUILD_VERSION_NEW }}", "sha": "${{ github.sha }}"}'
-     
+jobs:     
   force_build_setup:
     runs-on: ubuntu-latest
     outputs:
@@ -149,19 +134,68 @@ jobs:
         run: |
           echo "Publish Docker-build-backend-build"
   Git-tag:
+    environment: ee_kky
     needs: Publish-steps
     runs-on: ubuntu-latest
     steps:
       - name: Git tag
         run: |
           echo "Git tag"
+          echo ${{ secrets.MY_TT_KEY }}
+          echo ${{ secrets.PPP }}
+      - name: Checkout 
+        uses: actions/checkout@v3
+        with:
+          repository: mountainwood/TEST
+          fetch-depth: 0
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+           registry: github.com/
+           username: ${{ secrets.NAME }}
+           password: ${{ secrets.POI }}
+      - name: Github API
+        run: |
+          curl -vvv '${{github.SERVER_URL}}/${{ github.REPOSITORY }}/git/refs' \
+          -H 'Content-Type: application/json' \
+          -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
+          -X POST \
+          -d '{"ref": "refs/tags/${{ env.BUILD_VERSION }}", "sha": "${{ github.sha }}"}'
   Comment-PR-publishinfo:
+    environment: ee_kky
     needs: Git-tag
     runs-on: ubuntu-latest
     steps:
       - name: Comment-PR-publishinfo
         run: |
           echo "Comment-PR-publishinfo"
+      - name: Checkout 
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.REPOSITORY }}
+          fetch-depth: 0
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+           registry: github.com/
+           username: ${{ secrets.NAME }}
+           password: ${{ secrets.POI }}
+      - name: Github API Comment PR publish info ack search_result
+        run: |
+          curl -vvv -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' '${{github.SERVER_URL}}/api/v3/search/issues?q=${{ github.sha }}&type=Issues' 
+      - name: Get Pull Request Number
+        id: pr
+        run: echo "::set-output name=pull_request_number::$(gh pr view --json number -q .number || echo "")"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get Pull Request Number method two
+        run: |
+          echo github.event.number = ${{ github.event.number  }}
+          echo github.event.pull_request.number = ${{ github.event.pull_request.number }}
+          echo github.event.issue.number = ${{ github.event.issue.number }}
+      - name: Comment PR publish info by API
+        run: |
+          curl -vvv '${{ github.SERVER_URL }}/${{ github.REPOSITORY }}/issues/${{ github.event.pull_request.number }}/comments' -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' -H 'Content-Type: application/vnd.github.VERSION.full' -d '{"body": "Your Message to Comment"}'
   Trigger-Int-Site-Backend-Deploy:
     needs: [get_changefile,Publish-steps,Git-tag,Comment-PR-publishinfo]
     runs-on: ubuntu-latest
@@ -261,5 +295,4 @@ jobs:
       - name: symbolic
         run: 
           info=$(git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/master)
-          echo $(info)
           echo $(info)
