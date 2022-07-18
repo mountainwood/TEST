@@ -297,3 +297,4 @@ jobs:
         run: 
           info=$(git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/master)
           echo $(info)
+          echo $(info)
