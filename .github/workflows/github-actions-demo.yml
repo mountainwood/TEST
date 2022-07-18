@@ -84,6 +84,7 @@ jobs:
         id: filecheck
         run: |
           changeFiles=$(git diff --name-only origin/master...origin/${{ needs.env_setup.outputs.ref_branch }})
+          echo "Trigger event: ${{ github.event_name }}"
           echo "changeFiles ===>"$changeFiles
           for file_name in $changeFiles
           do
@@ -295,4 +296,5 @@ jobs:
       - name: symbolic
         run: 
           info=$(git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/master)
+          echo $(info)
           echo $(info)
