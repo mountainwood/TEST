@@ -35,6 +35,7 @@ jobs:
       - name: Decide force_build_var
         id: set_force_build_var
         run: |
+          echo 'manual force build ===>'${{ github.event.inputs.force_build_docker }}
           if [ ${{ github.event_name }} = "push" ]
           then
             echo "::set-output name=force_build_var::false" 
