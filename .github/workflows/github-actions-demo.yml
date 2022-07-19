@@ -2,11 +2,17 @@ name: GitHub Actions Demo
 on:
   #pull_request:
     #types: [opened, synchronize, labeled]
-  push:
-    branches:
-        - master
-        - '**'
-
+  #push:
+  #  branches:
+  #      - master
+  #      - '**'
+  workflow_dispatch:
+    inputs:
+      force_build_docker:
+        description: 'force build docker'
+        required: false
+        default: 'false'
+        
 env:
   BUILD_VERSION: 'v${{ github.RUN_NUMBER }}-${{ github.REF_NAME }}-az'
   GIT_ORIGIN: '${{ github.SERVER_URL }}'
@@ -22,14 +28,20 @@ env:
   
 jobs:     
   force_build_setup:
-    runs-on: ubuntu-latest
+    runs-on: [runner]
     outputs:
       force_build_var: ${{ steps.set_force_build_var.outputs.force_build_var }}
     steps:
       - name: Decide force_build_var
         id: set_force_build_var
         run: |
-          echo "::set-output name=force_build_var::false"
+          if [ ${{ github.event_name }} = "push" ]
+          then
+            echo "::set-output name=force_build_var::false" 
+          elif [ ${{ github.event_name }} = "workflow_dispatch" ]
+          then
+            echo "::set-output name=force_build_var::${{ github.event.inputs.force_build_docker }}"
+          fi
   docker_tag_generate:
     runs-on: ubuntu-latest
     outputs:
