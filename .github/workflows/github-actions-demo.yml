@@ -2,10 +2,10 @@ name: GitHub Actions Demo
 on:
   #pull_request:
     #types: [opened, synchronize, labeled]
-  #push:
-  #  branches:
-  #      - master
-  #      - '**'
+  push:
+    branches:
+        - master
+        - '**'
   workflow_dispatch:
     inputs:
       force_build_docker:
@@ -28,13 +28,14 @@ env:
   
 jobs:     
   force_build_setup:
-    runs-on: [runner]
+    runs-on: ubuntu-latest
     outputs:
       force_build_var: ${{ steps.set_force_build_var.outputs.force_build_var }}
     steps:
       - name: Decide force_build_var
         id: set_force_build_var
         run: |
+          echo 'manual force build ===>'${{ github.event.inputs.force_build_docker }}
           if [ ${{ github.event_name }} = "push" ]
           then
             echo "::set-output name=force_build_var::false" 
@@ -308,4 +309,5 @@ jobs:
       - name: symbolic
         run: 
           info=$(git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/master)
+          echo $(info)
           echo $(info)
