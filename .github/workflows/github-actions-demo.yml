@@ -2,10 +2,10 @@ name: GitHub Actions Demo
 on:
   #pull_request:
     #types: [opened, synchronize, labeled]
-  #push:
-  #  branches:
-  #      - master
-  #      - '**'
+  push:
+    branches:
+        - master
+        - '**'
   workflow_dispatch:
     inputs:
       force_build_docker:
@@ -28,7 +28,7 @@ env:
   
 jobs:     
   force_build_setup:
-    runs-on: [runner]
+    runs-on: ubuntu-latest
     outputs:
       force_build_var: ${{ steps.set_force_build_var.outputs.force_build_var }}
     steps:
