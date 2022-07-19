@@ -2,10 +2,10 @@ name: GitHub Actions Demo
 on:
   #pull_request:
     #types: [opened, synchronize, labeled]
-  #push:
-  #  branches:
-  #      - master
-  #      - '**'
+  push:
+    branches:
+        - master
+        - '**'
   workflow_dispatch:
     inputs:
       force_build_docker:
