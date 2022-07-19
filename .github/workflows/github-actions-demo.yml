@@ -28,7 +28,7 @@ env:
   
 jobs:     
   force_build_setup:
-    runs-on: [runner]
+    runs-on: ubuntu-latest
     outputs:
       force_build_var: ${{ steps.set_force_build_var.outputs.force_build_var }}
     steps:
