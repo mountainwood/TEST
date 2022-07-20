@@ -218,6 +218,16 @@ jobs:
       - name: Comment PR publish info by API
         run: |
           curl -vvv '${{ github.SERVER_URL }}/${{ github.REPOSITORY }}/issues/${{ github.event.pull_request.number }}/comments' -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' -H 'Content-Type: application/vnd.github.VERSION.full' -d '{"body": "Your Message to Comment"}'
+  get-deploy-tag:
+    needs: Git-tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show-Deploy-Information
+        run: |
+          echo 'Build result'
+          echo 'Tag: '${{ env.BUILD_VERSION }}
+          echo 'Branch Name: '${{ github.REF_NAME }}
+          echo 'Build Number: '${{ github.RUN_NUMBER }}
   Trigger-Int-Site-Backend-Deploy:
     needs: [get_changefile,Publish-steps,Git-tag,Comment-PR-publishinfo]
     runs-on: ubuntu-latest
