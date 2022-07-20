@@ -13,6 +13,14 @@ on:
         required: false
         default: 'false'
         
+        
+        
+        
+        
+concurrency: 
+  # if the workflow have same concurrency group, previous one will be cancel
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 env:
   BUILD_VERSION: 'v${{ github.RUN_NUMBER }}-${{ github.REF_NAME }}-az'
   GIT_ORIGIN: '${{ github.SERVER_URL }}'
@@ -65,6 +73,7 @@ jobs:
       - name: Decide the head_ref
         id: set_ref_branch
         run: |
+          echo "workflow-github-ref ===>"${{ github.workflow }}-${{ github.ref }}
           echo "DOCKER_TAG ===>"${{ needs.docker_tag_generate.outputs.docker_tag }}
           echo "Trigger event: ${{ github.event_name }}"
           echo "The ref will be checkout: ${{ github.ref }}"
