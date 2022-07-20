@@ -12,6 +12,8 @@ on:
         description: 'force build docker'
         required: false
         default: 'false'
+        
+        
 concurrency: 
   # if the workflow have same concurrency group, previous one will be cancel
   group: ${{ github.workflow }}-${{ github.ref }}
