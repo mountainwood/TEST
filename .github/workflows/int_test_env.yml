@@ -2,7 +2,12 @@ name: int_test_env
 
 permissions: write-all
 
-on:  # only support manually triggering
+on:  
+  push:
+    branches:
+        - master
+        - '**'
+  # only support manually triggering
   workflow_dispatch:
     inputs:
       test:
