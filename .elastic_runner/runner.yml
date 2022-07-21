@@ -4,3 +4,9 @@ build_docker:
       image: ubuntu-2004
       replica: 1
       enableDocker: True
+int_test_env:
+  int-test-env-runner:
+    pod-runner:
+      image: ubuntu-2004
+      replica: 1
+      enableDocker: True  
