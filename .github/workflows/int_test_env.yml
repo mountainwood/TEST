@@ -1,0 +1,20 @@
+name: int_test_env
+
+permissions: write-all
+
+on:  # only support manually triggering
+  workflow_dispatch:
+    inputs:
+      test:
+        description: 'Int test env for test'
+        required: false
+        default: 'true'
+      
+
+jobs:
+  int-test-env-flow:
+    runs-on: [int-test-env-runner]
+    steps:
+      - name: print flow
+        run: |
+          echo "Int test env flow"
