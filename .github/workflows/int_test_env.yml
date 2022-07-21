@@ -9,11 +9,14 @@ on:  # only support manually triggering
         description: 'Int test env for test'
         required: false
         default: 'true'
-      
+concurrency: 
+  # if the workflow have same concurrency group, previous one will be cancel
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true      
 
 jobs:
   int-test-env-flow:
-    runs-on: [int-test-env-runner]
+    runs-on: [ubuntu-latest]
     steps:
       - name: print variable
         run: |
