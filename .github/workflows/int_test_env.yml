@@ -37,6 +37,10 @@ jobs:
     needs: environment-check
     runs-on: [ubuntu-latest]
     steps:
+      - uses: AutoModality/action-clean@v1 # must clean workspace
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: post-actions
         run: |
           echo 'post-actions start'
