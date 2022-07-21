@@ -51,6 +51,7 @@ jobs:
         if: ${{ success() }}
         run: |
           echo 'int test env success.'
+          cat << EOF > /tmp/Fortify_result.json
           { 
           "to":"woodfealutor@gmail.com", 
           "subject":"[int test env] SUCCESSFUL: XDRTH/XDRTH-Fortify-${{ github.run_number }}", 
