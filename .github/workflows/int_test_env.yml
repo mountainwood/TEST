@@ -40,6 +40,32 @@ jobs:
       - name: post-actions
         run: |
           echo 'post-actions start'
+      - name: Run int test env
+        run: |
+          echo "go go test"
+      - name: Successful
+        if: ${{ success() }}
+        run: |
+          echo 'int test env success.'
+          { 
+          "to":"woodfealutor@gmail.com", 
+          "subject":"[int test env] SUCCESSFUL: XDRTH/XDRTH-Fortify-${{ github.run_number }}", 
+          "message":"Project: XDRTH/XDRTH-Fortify <br>Build Number: ${{ github.run_number }} " 
+          }
+          EOF
+          curl -X POST $CI_SENDMAIL -H "Content-Type: application/json" --data-binary "@/tmp/Fortify_result.json"
+      - name: Failed
+        if: ${{ failure() }}
+        run: |
+          echo 'int test env failed.'
+          cat << EOF > /tmp/Fortify_result.json
+          { 
+          "to":"woodfealutor@gmail.com", 
+          "subject":"[int test env] FAILED: XDRTH/XDRTH-Fortify-${{ github.run_number }}", 
+          "message":"Project: XDRTH/XDRTH-Fortify <br>Build Number: ${{ github.run_number }}" 
+          }
+          EOF
+          curl -X POST $CI_SENDMAIL -H "Content-Type: application/json" --data-binary "@/tmp/Fortify_result.json"
   int-test-env-flow:
     runs-on: [ubuntu-latest]
     steps:
