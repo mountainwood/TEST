@@ -20,6 +20,26 @@ concurrency:
   cancel-in-progress: true      
 
 jobs:
+  checkout-SCM:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: SCM-check start
+        run: |
+          echo 'checkout-SCM start'
+  environment-check:
+    needs: checkout-SCM
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: env-check start
+        run: |
+          echo 'env-check start'
+  post-actions:
+    needs: environment-check
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: post-actions
+        run: |
+          echo 'post-actions start'
   int-test-env-flow:
     runs-on: [ubuntu-latest]
     steps:
