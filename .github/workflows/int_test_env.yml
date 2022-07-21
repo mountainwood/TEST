@@ -3,17 +3,16 @@ name: int_test_env
 permissions: write-all
 
 on:  
-  push:
-    branches:
-        - master
-        - '**'
+  schedule:
+    # Daily 19:30 UTC + 8:00
+    - cron:  '55 12 * * *'
+  #push:
+  #  branches:
+  #      - master
+  #      - '**'
   # only support manually triggering
   workflow_dispatch:
-    inputs:
-      test:
-        description: 'Int test env for test'
-        required: false
-        default: 'true'
+
 concurrency: 
   # if the workflow have same concurrency group, previous one will be cancel
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -26,6 +25,7 @@ jobs:
       - name: SCM-check start
         run: |
           echo 'checkout-SCM start'
+          echo $(date +'%Y-%m-%dT%H:%M:%S')
   environment-check:
     needs: checkout-SCM
     runs-on: [ubuntu-latest]
