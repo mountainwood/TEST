@@ -5,7 +5,7 @@ permissions: write-all
 on:  
   schedule:
     # Daily 19:30 UTC + 8:00
-    - cron:  '55 12 * * *'
+    - cron:  '* * * * *'
   #push:
   #  branches:
   #      - master
@@ -51,26 +51,26 @@ jobs:
         if: ${{ success() }}
         run: |
           echo 'int test env success.'
-          cat << EOF > /tmp/Fortify_result.json
-          { 
-          "to":"woodfealutor@gmail.com", 
-          "subject":"[int test env] SUCCESSFUL: XDRTH/XDRTH-Fortify-${{ github.run_number }}", 
-          "message":"Project: XDRTH/XDRTH-Fortify <br>Build Number: ${{ github.run_number }} " 
-          }
-          EOF
-          curl -X POST $CI_SENDMAIL -H "Content-Type: application/json" --data-binary "@/tmp/Fortify_result.json"
+          #cat << EOF > /tmp/Fortify_result.json
+          #{ 
+          #"to":"woodfealutor@gmail.com", 
+          #"subject":"[int test env] SUCCESSFUL: XDRTH/XDRTH-Fortify-${{ github.run_number }}", 
+          #"message":"Project: XDRTH/XDRTH-Fortify <br>Build Number: ${{ github.run_number }} " 
+          #}
+          #EOF
+          #curl -X POST $CI_SENDMAIL -H "Content-Type: application/json" --data-binary "@/tmp/Fortify_result.json"
       - name: Failed
         if: ${{ failure() }}
         run: |
           echo 'int test env failed.'
-          cat << EOF > /tmp/Fortify_result.json
-          { 
-          "to":"woodfealutor@gmail.com", 
-          "subject":"[int test env] FAILED: XDRTH/XDRTH-Fortify-${{ github.run_number }}", 
-          "message":"Project: XDRTH/XDRTH-Fortify <br>Build Number: ${{ github.run_number }}" 
-          }
-          EOF
-          curl -X POST $CI_SENDMAIL -H "Content-Type: application/json" --data-binary "@/tmp/Fortify_result.json"
+          #cat << EOF > /tmp/Fortify_result.json
+          #{ 
+          #"to":"woodfealutor@gmail.com", 
+          #"subject":"[int test env] FAILED: XDRTH/XDRTH-Fortify-${{ github.run_number }}", 
+          #"message":"Project: XDRTH/XDRTH-Fortify <br>Build Number: ${{ github.run_number }}" 
+          #}
+          #EOF
+          #curl -X POST $CI_SENDMAIL -H "Content-Type: application/json" --data-binary "@/tmp/Fortify_result.json"
   int-test-env-flow:
     runs-on: [ubuntu-latest]
     steps:
