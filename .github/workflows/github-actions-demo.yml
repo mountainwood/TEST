@@ -33,12 +33,12 @@ env:
 jobs:
   test_job_if:
     runs-on: ubuntu-latest
-    name: idetify if
-    if: ${{ env.abc }}
+   
     steps:
       - name: Decide force_build_var
         run: |
            echo "GOGOGO"
+           echo ${{ env.abc }}
   force_build_setup:
     runs-on: ubuntu-latest
     outputs:
