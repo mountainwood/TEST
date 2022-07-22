@@ -134,7 +134,7 @@ jobs:
           fi
   Docker-build-fronend-build:
     needs: [docker_tag_generate,get_changefile, force_build_setup]
-    if: ${{ needs.get_changefile.outputs.needToBuildAndPublish == 'true' }}
+    if: needs.get_changefile.outputs.needToBuildAndPublish == 'true' 
     runs-on: ubuntu-latest
     steps:
       - name: Run tf scan
