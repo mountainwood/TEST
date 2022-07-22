@@ -12,11 +12,6 @@ on:
         description: 'force build docker'
         required: false
         default: 'false'
-        
-        
-        
-        
-        
 concurrency: 
   # if the workflow have same concurrency group, previous one will be cancel
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -29,12 +24,20 @@ env:
   EE_KKY_CR: '${{ secrets.ee_kky.EE_KKY_CR }}'
   MY_TT_KEY: '${{ secrets.MY_TT_KEY }}'
   ppp: '${{ secrets.ee_kky.PPP }}'
+  abc: 'true'  
   
   BUILD_NAME: 'aws.registry.trendmicro.com/mtdis'
   DOCKER_PROXY: "aws.registry.trendmicro.com/etscache/"
   
   
-jobs:     
+jobs:
+  test_job_if:
+    runs-on: ubuntu-latest
+    if: ${{ env.abc }}
+    steps:
+      - name: Decide force_build_var
+        run: |
+           echo "GOGOGO"
   force_build_setup:
     runs-on: ubuntu-latest
     outputs:
