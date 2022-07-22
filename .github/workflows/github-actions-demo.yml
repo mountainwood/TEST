@@ -121,7 +121,7 @@ jobs:
             then
               echo "file_name_check_deploy ===>"$file_name
               echo "file_name is changed: ${file_name}"
-              echo "::set-output name=needToBuildAndPublish::true"
+              echo "::set-output name=needToBuildAndPublish::false"
               exit 0
             fi
           done
@@ -134,7 +134,7 @@ jobs:
           fi
   Docker-build-fronend-build:
     needs: [docker_tag_generate,get_changefile, force_build_setup]
-    if: ${{ needs.force_build_setup.outputs.force_build_var == 'true' }}
+    if: ${{ needs.get_changefile.outputs.needToBuildAndPublish == 'true' }} || ${{ needs.force_build_setup.outputs.force_build_var == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Run tf scan
