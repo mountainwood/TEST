@@ -33,6 +33,7 @@ env:
 jobs:
   test_job_if:
     runs-on: ubuntu-latest
+    name: idetify if
     if: ${{ env.abc }}
     steps:
       - name: Decide force_build_var
