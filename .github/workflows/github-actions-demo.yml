@@ -49,7 +49,7 @@ jobs:
   test_job_if:
     needs: force_build_setup
     runs-on: ubuntu-latest
-    if: ${ force_build_var } == true
+    if: ${{ needs.force_build_setup.outputs.force_build_var }} == true
     steps:
       - name: job if test
         run: |
