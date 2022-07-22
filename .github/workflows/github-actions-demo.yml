@@ -55,6 +55,7 @@ jobs:
         run: |
            echo "GOGOGO"
            echo ${{ env.abc }}
+           echo 'force_build ===> '${{ needs.force_build_setup.outputs.force_build_var }}
   docker_tag_generate:
     runs-on: ubuntu-latest
     outputs:
