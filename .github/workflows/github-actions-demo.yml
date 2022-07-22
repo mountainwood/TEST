@@ -31,14 +31,6 @@ env:
   
   
 jobs:
-  test_job_if:
-    runs-on: ubuntu-latest
-    if: ${{ env.abc }} == true
-    steps:
-      - name: Decide force_build_var
-        run: |
-           echo "GOGOGO"
-           echo ${{ env.abc }}
   force_build_setup:
     runs-on: ubuntu-latest
     outputs:
@@ -54,6 +46,15 @@ jobs:
           then
             echo "::set-output name=force_build_var::${{ github.event.inputs.force_build_docker }}"
           fi
+  test_job_if:
+    needs: force_build_setup
+    runs-on: ubuntu-latest
+    if: ${ force_build_var } == true
+    steps:
+      - name: job if test
+        run: |
+           echo "GOGOGO"
+           echo ${{ env.abc }}
   docker_tag_generate:
     runs-on: ubuntu-latest
     outputs:
