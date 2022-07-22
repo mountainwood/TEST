@@ -33,7 +33,7 @@ env:
 jobs:
   test_job_if:
     runs-on: ubuntu-latest
-   
+    if: env.abc == true
     steps:
       - name: Decide force_build_var
         run: |
