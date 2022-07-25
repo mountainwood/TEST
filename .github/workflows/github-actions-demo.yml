@@ -119,7 +119,7 @@ jobs:
               exit 0
             fi
           done
-          if {{ $changeFilesh == '' }} && ${{ needs.env_setup.outputs.ref_branch }} = 'master'
+          if $changeFilesh == '' && ${{ needs.env_setup.outputs.ref_branch }} == 'master'
           then
             echo "Merge to Master. Excute Build and Push."
             echo 'v${{ github.RUN_NUMBER }}-${{ github.REF_NAME }}-az'
