@@ -140,7 +140,8 @@ jobs:
           for worker in $workers:
           do
             #docker build -f ./src/$worker/Dockerfile . -t aws.registry.trendmicro.com/xdr-app-th/$worker:${{ needs.set_docker_tag.outputs.docker_tag }}            
-            echo "/src/"$worker"/Dockerfile"
+            echo "worker ===> "$worker
+            echo "/src/ "$worker
             echo "sub ===> "$worker:${{ needs.set_docker_tag.outputs.docker_tag }}
           done 
       - name: Run tf scan
