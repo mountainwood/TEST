@@ -134,6 +134,17 @@ jobs:
     needs: [docker_tag_generate,get_changefile, force_build_setup]
     runs-on: ubuntu-latest
     steps:
+      - name: Build Series
+        working-directory: ./src/python-shared-packages/scripts
+        shell: bash
+        run: |
+          workers=[health-status-aggregator,health-status-aggregator]
+          for worker in $workers:
+          do
+            #docker build -f ./src/$worker/Dockerfile . -t aws.registry.trendmicro.com/xdr-app-th/$worker:${{ needs.set_docker_tag.outputs.docker_tag }}            
+            echo "/src/"$worker"/Dockerfile"
+            echo "sub ===> "$worker:${{ needs.set_docker_tag.outputs.docker_tag }}
+          done 
       - name: Run tf scan
         run: |
           if ${{ needs.get_changefile.outputs.needToBuildAndPublish == 'true' }} || ${{ needs.force_build_setup.outputs.force_build_var == 'true' }}
