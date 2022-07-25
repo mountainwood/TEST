@@ -130,10 +130,17 @@ jobs:
             exit 0
             fi
           fi
+  
   Docker-build-fronend-build:
     needs: [docker_tag_generate,get_changefile, force_build_setup]
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+          var: [6, 8, 10]
     steps:
+      - name: print matrix
+        run: |
+          echo ${{ matrix.var }}
       - name: Build Series
         run: |
           workers=[health-status-aggregator,health-status-aggregator]
