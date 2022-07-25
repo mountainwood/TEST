@@ -135,8 +135,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Build Series
-        working-directory: ./src/python-shared-packages/scripts
-        shell: bash
         run: |
           workers=[health-status-aggregator,health-status-aggregator]
           for worker in $workers:
