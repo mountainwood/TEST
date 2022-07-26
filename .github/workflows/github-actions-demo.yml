@@ -37,6 +37,7 @@ env:
 jobs: 
   get_pr_number:
     runs-on: ubuntu-latest
+    permissions: write-all
     steps:
       - name: get pr number
         run: |
