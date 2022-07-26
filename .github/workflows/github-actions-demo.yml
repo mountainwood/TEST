@@ -47,7 +47,7 @@ jobs:
           info=$(echo "$find_all_pr" | jq '.')
           pr_number=$(echo "$find_all_pr" | jq '.[].number')
           target_syntax=$(echo "$find_all_pr" | jq '.[] | {repo:.url, number:.number, sha:.head.sha}
-          target=$(echo "$find_all_pr" | jq '.[] | select(.head.sha==${{ github.sha }}) | {repo:.url, number:.number, sha:.head.sha}')         
+          target=$(echo "$find_all_pr" | jq '.[] | select(.head.sha==${{ github.sha }}) ')         
           echo "pr_number ===>"$pr_number
           echo "target ===>"$target
           echo "compare information ===>"${{ github.sha }}
