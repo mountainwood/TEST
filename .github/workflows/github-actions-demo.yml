@@ -270,6 +270,7 @@ jobs:
           echo 'Build Number: '${{ github.RUN_NUMBER }}
   Trigger-Int-Site-Backend-Deploy:
     needs: [get_changefile,Publish-steps,Git-tag,Comment-PR-publishinfo]
+    if: needs.env_setup.outputs.ref_branch == 'master' && github.event.pull_request.merged == 'true' && needs.get_changefile.outputs.needToBuildAndPublish == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Trigger-Int-Site-Backend-Deploy
