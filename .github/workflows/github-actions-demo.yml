@@ -268,23 +268,20 @@ jobs:
           echo 'Tag: '${{ env.BUILD_VERSION }}
           echo 'Branch Name: '${{ github.REF_NAME }}
           echo 'Build Number: '${{ github.RUN_NUMBER }}
-          echo 'ref_bench ===>'${{ needs.env_setup.outputs.ref_branch }}
+          echo 'ref_name ===>'${{ github.ref_name }}
           echo 'merged  ===>'${{ github.event.pull_request.merged }}
           echo 'need  ===>'${{ needs.get_changefile.outputs.needToBuildAndPublish }}
   Trigger-Int-Site-Backend-Deploy:
     needs: [get_changefile,Publish-steps,Git-tag,Comment-PR-publishinfo]
-    if: needs.env_setup.outputs.ref_branch == 'master' && github.event.pull_request.merged == 'true' && needs.get_changefile.outputs.needToBuildAndPublish == 'true'
+    if:  github.ref_name == 'master' && needs.get_changefile.outputs.needToBuildAndPublish == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Trigger-Int-Site-Backend-Deploy
         run: |
-          if ${{ github.event.pull_request.merged == 'true' }} && ${{ needs.get_changefile.outputs.needToBuildAndPublish == 'true' }}
-          then
-            echo PR #${{ github.event.number }} has been merged
-            echo "equals expected: true ===> actual: needToBuildAndPublish"
-            echo "allof branch name ===> master"
-            echo "Trigger-Int-Site-Backend-Deploy"
-          fi
+          echo PR #${{ github.event.number }} has been merged
+          echo "equals expected: true ===> actual: needToBuildAndPublish"
+          echo "allof branch name ===> master"
+
 
             
           
