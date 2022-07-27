@@ -259,7 +259,7 @@ jobs:
         run: |
           curl -vvv '${{ github.SERVER_URL }}/${{ github.REPOSITORY }}/issues/${{ github.event.pull_request.number }}/comments' -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' -H 'Content-Type: application/vnd.github.VERSION.full' -d '{"body": "Your Message to Comment"}'
   get-deploy-tag:
-    needs: [get_changefile,Publish-steps,Git-tag,Comment-PR-publishinfo]
+    needs: [env_setup, get_changefile,Publish-steps,Git-tag,Comment-PR-publishinfo]
     runs-on: ubuntu-latest
     steps:
       - name: Show-Deploy-Information
