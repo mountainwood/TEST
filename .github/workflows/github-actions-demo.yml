@@ -9,7 +9,11 @@ on:
   workflow_dispatch:
     inputs:
       force_build_docker:
+        type: choice
         description: 'force build docker'
+        options:
+          - 'true'
+          - 'false'
         required: false
         default: 'false'
         
