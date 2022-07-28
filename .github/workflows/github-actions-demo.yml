@@ -1,7 +1,7 @@
 name: GitHub Actions Demo
 on:
   #tester-c-03
-  #test-cur-f-01
+  #test-cur-02
   #pull_request:
     #types: [opened, synchronize, labeled]
   push:
