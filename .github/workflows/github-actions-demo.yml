@@ -18,7 +18,7 @@ on:
         
         
 concurrency: 
-  # if the workflow have same concurrency group, previous one will be cancel
+  # if the workflow have same concurrency group, previous one will be cancel2
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 env:
