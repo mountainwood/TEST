@@ -1,6 +1,6 @@
 name: GitHub Actions Demo
 on:
-  #test-merge-q-01
+  #test-merge-q-002
   #test-merge-a-02
   #pull_request:
     #types: [opened, synchronize, labeled]
