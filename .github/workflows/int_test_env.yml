@@ -2,7 +2,6 @@ name: int_test_env
 
 permissions: write-all
 
-#test-g-01
 on:  
   schedule:
     # Daily 19:30 UTC + 8:00
