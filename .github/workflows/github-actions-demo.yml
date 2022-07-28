@@ -39,6 +39,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
+      - name: attmp
+        run: |
+          echo " github.RUN_ATTEMPT   - "${{ github.RUN_ATTEMPT }} 
       - name: get pr number
         run: |
           # get all open pr number
