@@ -1,6 +1,6 @@
 name: GitHub Actions Demo
 on:
-  #tester-c
+  #tester-c-02
   #pull_request:
     #types: [opened, synchronize, labeled]
   push:
