@@ -6,6 +6,7 @@ on:
   schedule:
     # Daily 19:30 UTC + 8:00
     - cron:  '25 13 * * *'
+  #test-d
   #push:
   #  branches:
   #      - master
