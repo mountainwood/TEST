@@ -1,5 +1,6 @@
 name: GitHub Actions Demo
 on:
+  # test-cur-b-01
   #pull_request:
     #types: [opened, synchronize, labeled]
   push:
@@ -20,7 +21,6 @@ on:
 concurrency: 
   # if the workflow have same concurrency group, previous one will be cancel2
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 env:
   BUILD_VERSION: 'v${{ github.RUN_NUMBER }}-${{ github.REF_NAME }}-act-az'
   GIT_ORIGIN: '${{ github.SERVER_URL }}'
