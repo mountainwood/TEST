@@ -1,0 +1,16 @@
+name: 'Clean workspace and Checkout'
+description: 'clean workspace and checkout'
+runs:
+  using: "composite"
+  steps:
+    - name: Clean workspace # must clean workspace
+        run: |
+          ${{ env.DOCKER_CLEAN_WORKSPACE_COMMAND }}
+    - name: Checkout 
+      uses: actions/checkout@v3
+      with:
+        repository: Commercial-Luwak/xdr-app-threat-hunting
+        fetch-depth: 0
+    - name: Print message
+      run: |
+        echo 'abccccc'
