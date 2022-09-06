@@ -3,12 +3,10 @@ description: 'clean workspace and checkout'
 runs:
   using: "composite"
   steps:
-    - name: Clean workspace # must clean workspace
-        run: |
-          ${{ env.DOCKER_CLEAN_WORKSPACE_COMMAND }}
+    - uses: AutoModality/action-clean@v1 # must clean workspace
     - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+      with:
+        fetch-depth: 0
     - name: Print message
       run: |
         echo 'abccccc'
