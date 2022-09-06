@@ -117,5 +117,5 @@ jobs:
       - name: print flow
         run: |
           echo "Int test env flow"
-      - uses: ./actions/clean-workspace-and-checkout
+      - uses: ./.github/actions/clean-workspace-and-checkout
         id: clean-workspace-and-checkout
