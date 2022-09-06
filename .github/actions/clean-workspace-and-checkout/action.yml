@@ -7,6 +7,3 @@ runs:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
-    - name: Print message
-      run: |
-        echo 'abccccc'
