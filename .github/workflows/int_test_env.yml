@@ -9,10 +9,10 @@ on:
     # Daily 19:30 UTC + 8:00
     - cron:  '25 13 * * *'
   #test-d-03
-  #push:
-  #  branches:
-  #      - master
-  #      - '**'
+  push:
+    branches:
+        - master
+        - '**'
   # only support manually triggering1
   workflow_dispatch:
 
