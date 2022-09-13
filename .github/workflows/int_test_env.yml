@@ -3,7 +3,7 @@ name: int_test_env
 permissions: write-all
 
 #test-g-01
-#test-merge-p-001
+#test-merge-p-001-feature-01-01
 on:  
   schedule:
     # Daily 19:30 UTC + 8:00
