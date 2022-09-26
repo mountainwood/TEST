@@ -12,7 +12,7 @@ on:
   push:
     branches:
         - master
-        - '**'
+        - 'cross-****'
   # only support manually triggering1
   workflow_dispatch:
 
