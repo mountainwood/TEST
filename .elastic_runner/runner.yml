@@ -16,3 +16,9 @@ feature_solve_cross_reference:
         image: ubuntu-2004
         replica: 1
         enableDocker: True  
+master_solve_cross_reference:
+  master-solve-cross-reference-runner:
+      pod-runner:
+        image: ubuntu-2004
+        replica: 1
+        enableDocker: True 
