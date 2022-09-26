@@ -10,3 +10,9 @@ int_test_env:
       image: ubuntu-2004
       replica: 1
       enableDocker: True  
+feature_solve_cross_reference:
+  feature-solve-cross-reference-runner:
+      pod-runner:
+        image: ubuntu-2004
+        replica: 1
+        enableDocker: True  
